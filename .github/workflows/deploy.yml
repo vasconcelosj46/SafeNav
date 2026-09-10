@@ -1,0 +1,25 @@
+name: Deploy to AWS
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Conectar via SSH e atualizar servidor na AWS
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.AWS_HOST }}
+          username: ${{ secrets.AWS_USER }}
+          key: ${{ secrets.AWS_SSH_KEY }}
+          script: |
+            # Acessa a pasta do projeto na VM
+            cd /home/ubuntu/safenav || git clone https://github.com/${{ github.repository }} /home/ubuntu/safenav && cd /home/ubuntu/safenav
+            
+            # Atualiza o código com a versão mais recente do GitHub
+            git pull origin main
+            
+            # Reinicia o servidor web Nginx para aplicar as mudanças
+            sudo systemctl restart nginx
