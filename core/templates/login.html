@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SafeKids - Cuidado Parental</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 font-sans antialiased">
+  <div class="min-h-screen flex">
+    
+    <!-- Lado Esquerdo: Banner do Projeto -->
+    <div class="hidden lg:flex lg:w-1/2 bg-blue-950 text-white p-12 flex-col justify-between relative overflow-hidden">
+      <div class="z-10">
+        <span class="inline-block bg-blue-800 text-blue-200 text-xs px-3 py-1 rounded-full font-semibold uppercase tracking-wider mb-4">
+          Cuidado Parental Digital
+        </span>
+        <h1 class="text-4xl font-bold leading-tight">
+          Proteja quem você ama no ambiente digital.
+        </h1>
+        <p class="text-slate-300 mt-4 text-lg">
+          Gerencie o tempo de tela, filtre conteúdos inadequados e promova uma navegação saudável para seus filhos.
+        </p>
+      </div>
+
+      <!-- Ilustração Simbolizada / Card de Destaque -->
+      <div class="z-10 bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/20 my-8">
+        <div class="flex items-center space-x-4">
+          <div class="p-3 bg-emerald-500 rounded-xl text-white">
+            🛡️
+          </div>
+          <div>
+            <h4 class="font-semibold text-white">Ambiente 100% Seguro</h4>
+            <p class="text-xs text-slate-300">Conforme com as diretrizes da LGPD e Estatuto da Criança e do Adolescente.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="z-10 text-xs text-slate-400">
+        © 2026 SafeKids — Projeto de Pós-Graduação.
+      </div>
+    </div>
+
+    <!-- Lado Direito: Formulário de Login -->
+    <div class="w-full lg:w-1/2 flex items-center justify-center p-8">
+      <div class="max-w-md w-full space-y-6">
+        <div>
+          <h2 class="text-3xl font-extrabold text-slate-900">Acesse sua conta</h2>
+          <p class="text-sm text-slate-600 mt-1">Bem-vindo(a) de volta ao painel de controle familiar.</p>
+        </div>
+
+        <!-- Formulário atualizado com Segurança Django (OWASP Top 10) -->
+        <form method="POST" class="space-y-4">
+          {% csrf_token %}
+          
+          <div>
+            <label class="block text-sm font-medium text-slate-700">Usuário do Responsável</label>
+            <input type="text" name="username" placeholder="ex: pai_teste" required class="mt-1 w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-600 focus:border-transparent outline-none transition">
+          </div>
+
+          <div>
+            <div class="flex justify-between items-center">
+              <label class="block text-sm font-medium text-slate-700">Senha</label>
+              <a href="#" class="text-xs text-blue-600 hover:underline">Esqueceu a senha?</a>
+            </div>
+            <input type="password" name="password" placeholder="••••••••" required class="mt-1 w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-600 focus:border-transparent outline-none transition">
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-slate-700">Código de Autenticação (2FA)</label>
+            <input type="text" name="token_2fa" placeholder="000000" maxlength="6" class="mt-1 w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-600 focus:border-transparent outline-none transition font-mono tracking-widest text-center">
+            <p class="text-xs text-slate-500 mt-1">Abra seu app autenticador para ver o código.</p>
+          </div>
+
+          <!-- Bloco dinâmico para mostrar erro caso o usuário erre a senha -->
+          {% if erro %}
+          <div class="p-3 bg-red-100 text-red-700 text-sm rounded-lg border border-red-200">
+            {{ erro }}
+          </div>
+          {% endif %}
+
+          <div class="flex items-center">
+            <input type="checkbox" id="remember" class="h-4 w-4 text-blue-600 rounded border-slate-300">
+            <label for="remember" class="ml-2 text-sm text-slate-600">Lembrar deste dispositivo</label>
+          </div>
+
+          <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 rounded-lg shadow-md hover:shadow-lg transition">
+            Entrar no Painel Familiar
+          </button>
+        </form>
+
+        <div class="text-center text-sm text-slate-600 pt-4">
+          Não tem uma conta? <a href="#" class="text-blue-600 font-semibold hover:underline">Cadastre-se gratuitamente</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

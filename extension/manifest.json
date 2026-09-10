@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "SafeNav Coletor",
+  "version": "1.0",
+  "description": "Agente de observabilidade do ecossistema SafeNav.",
+  "permissions": [
+    "tabs"
+  ],
+  "host_permissions": [
+    "http://127.0.0.1:8000/*",
+    "https://*/*",
+    "http://*/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  }
+}
