@@ -1,3 +1,4 @@
+from django.contrib.auth.forms import UserCreationForm
 # pyrefly: ignore [missing-import]
 from django.shortcuts import render, redirect, get_object_or_404
 # pyrefly: ignore [missing-import]
@@ -29,6 +30,7 @@ from io import BytesIO
 # pyrefly: ignore [missing-import]
 from django_otp.plugins.otp_totp.models import TOTPDevice
 import secrets
+
 # View da API REST (Recebe dados da extensão)
 class LogAPIView(APIView):
     authentication_classes = [TokenAuthentication]
@@ -179,3 +181,16 @@ def setup_2fa_view(request):
     qr_code_base64 = base64.b64encode(buffer.getvalue()).decode("utf-8")
     
     return render(request, 'setup_2fa.html', {'qr_code': qr_code_base64})
+
+    # View para cadastro de novos responsáveis
+def register_user(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Conta criada com sucesso! Faça o login.')
+            return redirect('login')
+    else:
+        form = UserCreationForm()
+        
+    return render(request, 'registro.html', {'form': form})

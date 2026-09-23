@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SafeKids - Criar Conta</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Ajustes rápidos para o formulário padrão do Django combinar com o Tailwind */
+    form p { margin-bottom: 1rem; }
+    form label { display: block; font-size: 0.875rem; font-weight: 500; color: #1e293b; margin-bottom: 0.25rem; }
+    form input { width: 100%; padding: 0.5rem 0.75rem; border: 1px solid #cbd5e1; border-radius: 0.5rem; outline: none; }
+    form input:focus { border-color: #2563eb; box-shadow: 0 0 0 1px #2563eb; }
+    .helptext, .errorlist { font-size: 0.75rem; color: #64748b; margin-top: 0.25rem; display: block; }
+    .errorlist { color: #ef4444; list-style: none; padding: 0; }
+  </style>
+</head>
+<body class="bg-slate-50 font-sans antialiased text-slate-900 flex items-center justify-center min-h-screen p-4">
+  
+  <div class="bg-white p-8 rounded-xl shadow-sm border border-slate-200 w-full max-w-md">
+    <div class="text-center mb-6">
+      <h2 class="text-2xl font-bold text-slate-800">🛡️ SafeKids</h2>
+      <p class="text-sm text-slate-500 mt-1">Crie sua conta de responsável</p>
+    </div>
+    
+    <form method="POST">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="w-full bg-blue-900 hover:bg-blue-950 text-white px-4 py-2 mt-4 rounded-lg text-sm font-semibold transition">
+        Cadastrar
+      </button>
+    </form>
+    
+    <div class="mt-6 text-center text-sm border-t border-slate-100 pt-4">
+      <a href="{% url 'login' %}" class="text-blue-600 hover:underline font-medium">Já tem uma conta? Faça login aqui.</a>
+    </div>
+  </div>
+
+</body>
+</html>
