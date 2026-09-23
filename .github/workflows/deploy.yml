@@ -22,7 +22,7 @@ jobs:
             git pull origin main
             
             # Reinicia o servidor web Nginx para aplicar as mudanças
-            sudo systemctl restart nginx
+            sudo systemctl restart nginx-safe
 
             # Reinicia o servidor de aplicação Python (ESSENCIAL PARA ATUALIZAR A TELA)
             sudo systemctl restart gunicorn
