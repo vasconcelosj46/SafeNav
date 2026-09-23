@@ -15,14 +15,18 @@ jobs:
           username: ${{ secrets.AWS_USER }}
           key: ${{ secrets.AWS_SSH_KEY }}
           script: |
-            # Acessa a pasta do projeto na VM
-            cd /home/ubuntu/safenav || git clone https://github.com/${{ github.repository }} /home/ubuntu/safenav && cd /home/ubuntu/safenav
+            # Acessa a pasta do projeto
+            cd /home/ubuntu/safenav
             
-            # Atualiza o código com a versão mais recente do GitHub
+            # Puxa o código atualizado
             git pull origin main
             
-            # Reinicia o servidor web Nginx para aplicar as mudanças
-            sudo systemctl restart nginx-safe
-
-            # Reinicia o servidor de aplicação Python (ESSENCIAL PARA ATUALIZAR A TELA)
-            sudo systemctl restart gunicorn
+            # Reinicia o Nginx
+            sudo systemctl restart nginx
+            
+            # Encerra o processo antigo do Gunicorn na memória (o '|| true' evita falhas se o processo já estiver parado)
+            pkill gunicorn || true
+            
+            # Ativa o ambiente virtual e sobe a nova versão do Gunicorn em segundo plano
+            source venv/bin/activate
+            gunicorn --bind 127.0.0.1:8000 safenav_project.wsgi:application --daemon
