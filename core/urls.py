@@ -11,5 +11,5 @@ urlpatterns = [
     path('api/logs/', LogAPIView.as_view(), name='api-logs'),
     path('dependente/novo/', views.register_dependent, name='register_dependent'),
     path('dependente/excluir/<int:id>/', views.delete_dependent, name='delete_dependent'),
-    path('registrar/', views.register_user, name='register'), # Nova URL de Registro
+    path('registrar/', views.register_user, name='registro'), # Nova URL de Registro
 ]
