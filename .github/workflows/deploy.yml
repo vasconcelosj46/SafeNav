@@ -15,22 +15,21 @@ jobs:
           username: ${{ secrets.AWS_USER }}
           key: ${{ secrets.AWS_SSH_KEY }}
           script: |
-            # Acessa a pasta do projeto
+            # Acede à pasta do projeto e força a versão exata do GitHub
             cd /home/ubuntu/safenav
-            
-            # Força o servidor a descarregar a versão exata do GitHub
             git fetch --all
             git reset --hard origin/main
             
-            # Reinicia o Nginx
+            # Reinicia o Nginx e encerra o processo antigo do Gunicorn
             sudo systemctl restart nginx
-            
-            # Força o encerramento do Gunicorn antigo
             sudo pkill -f gunicorn || true
             
-            # Ativa o ambiente virtual e injeta a chave de segurança
+            # Ativa o ambiente virtual e injeta a chave secreta de segurança
             source venv/bin/activate
             export SECRET_KEY="${{ secrets.DJANGO_SECRET_KEY }}"
             
-            # Inicia a versão nova totalmente desvinculada da sessão SSH
-            nohup gunicorn --bind 127.0.0.1:8000 safenav_project.wsgi:application > /dev/null 2>&1 &
+            # Inicia o Gunicorn com redirecionamento total de canais para não prender a sessão SSH
+            nohup gunicorn --bind 127.0.0.1:8000 safenav_project.wsgi:application --daemon </dev/null >/dev/null 2>&1 &
+            
+            # Informa o GitHub Actions que o script concluiu com sucesso, forçando o fecho da ligação
+            exit 0
