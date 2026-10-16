@@ -18,16 +18,17 @@ jobs:
             # Acessa a pasta do projeto
             cd /home/ubuntu/safenav
             
-            # Puxa o código atualizado
-            git pull origin main
+            # Descarta qualquer alteração local na AWS e força a versão exata do GitHub
+            git fetch --all
+            git reset --hard origin/main
             
             # Reinicia o Nginx
             sudo systemctl restart nginx
             
-            # Encerra o processo antigo do Gunicorn na memória (o '|| true' evita falhas se o processo já estiver parado)
-            pkill gunicorn || true 
+            # Encerra o processo antigo do Gunicorn na memória
+            sudo pkill -f gunicorn || true
             
-            # Ativa o ambiente virtual e sobe a nova versão do Gunicorn em segundo plano
+            # Ativa o ambiente virtual e sobe a nova versão do Gunicorn
             source venv/bin/activate
             export SECRET_KEY="${{ secrets.DJANGO_SECRET_KEY }}"
             gunicorn --bind 127.0.0.1:8000 safenav_project.wsgi:application --daemon
