@@ -19,17 +19,23 @@ jobs:
             cd /home/ubuntu/safenav
             git fetch --all
             git reset --hard origin/main
-            
-            # Reinicia o Nginx e encerra o processo antigo do Gunicorn
+
+            # Reinicia o Nginx
             sudo systemctl restart nginx
-            sudo pkill -f gunicorn || true
-            
+
+            # Encerra o Gunicorn antigo liberando a porta 8000.
+            # Atenção: NÃO usar 'pkill -f gunicorn' aqui. O -f casa com a linha de comando
+            # da própria sessão SSH do deploy (que contém a palavra "gunicorn") e a derruba.
+            sudo fuser -k 8000/tcp || sudo pkill -x gunicorn || true
+            sleep 2
+
             # Ativa o ambiente virtual e injeta a chave secreta de segurança
             source venv/bin/activate
             export SECRET_KEY="${{ secrets.DJANGO_SECRET_KEY }}"
-            
+
             # Inicia o Gunicorn com redirecionamento total de canais para não prender a sessão SSH
             nohup gunicorn --bind 127.0.0.1:8000 safenav_project.wsgi:application --daemon </dev/null >/dev/null 2>&1 &
-            
-            # Informa o GitHub Actions que o script concluiu com sucesso, forçando o fecho da ligação
-            exit 0
+
+            # Confere se a aplicação respondeu; se não, o deploy falha de forma visível
+            sleep 3
+            curl -fsS -o /dev/null http://127.0.0.1:8000/ && echo "Gunicorn OK"
