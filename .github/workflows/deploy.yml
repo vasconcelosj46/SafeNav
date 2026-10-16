@@ -25,7 +25,7 @@ jobs:
             sudo systemctl restart nginx
             
             # Encerra o processo antigo do Gunicorn na memória (o '|| true' evita falhas se o processo já estiver parado)
-            sudo pkill -f gunicorn || true 
+            pkill gunicorn || true 
             
             # Ativa o ambiente virtual e sobe a nova versão do Gunicorn em segundo plano
             source venv/bin/activate
