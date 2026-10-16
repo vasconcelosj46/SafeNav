@@ -29,4 +29,5 @@ jobs:
             
             # Ativa o ambiente virtual e sobe a nova versão do Gunicorn em segundo plano
             source venv/bin/activate
+            export SECRET_KEY="${{ secrets.DJANGO_SECRET_KEY }}"
             gunicorn --bind 127.0.0.1:8000 safenav_project.wsgi:application --daemon
